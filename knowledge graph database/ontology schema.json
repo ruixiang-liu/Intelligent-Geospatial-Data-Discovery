@@ -1,0 +1,413 @@
+[
+  {
+    "keys": [
+      "nodes",
+      "relationships"
+    ],
+    "length": 2,
+    "_fields": [
+      [
+        {
+          "identity": {
+            "low": -102,
+            "high": -1
+          },
+          "labels": [
+            "Space"
+          ],
+          "properties": {
+            "name": "Space",
+            "indexes": [
+              "centroid",
+              "west,east,south,north",
+              "west",
+              "east",
+              "south",
+              "north"
+            ],
+            "constraints": [
+              "Constraint( id=31, name='space_dataset', type='NODE PROPERTY UNIQUENESS', schema=(:Space {dataset_id}), ownedIndex=30 )"
+            ]
+          },
+          "elementId": "-102"
+        },
+        {
+          "identity": {
+            "low": -105,
+            "high": -1
+          },
+          "labels": [
+            "Organization"
+          ],
+          "properties": {
+            "name": "Organization",
+            "indexes": [
+              "embedding",
+              "canonical",
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=23, name='org_id', type='NODE PROPERTY UNIQUENESS', schema=(:Organization {id}), ownedIndex=22 )"
+            ]
+          },
+          "elementId": "-105"
+        },
+        {
+          "identity": {
+            "low": -108,
+            "high": -1
+          },
+          "labels": [
+            "Format"
+          ],
+          "properties": {
+            "name": "Format",
+            "indexes": [
+              "embedding",
+              "canonical",
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=29, name='format_id', type='NODE PROPERTY UNIQUENESS', schema=(:Format {id}), ownedIndex=28 )"
+            ]
+          },
+          "elementId": "-108"
+        },
+        {
+          "identity": {
+            "low": -101,
+            "high": -1
+          },
+          "labels": [
+            "Keyword"
+          ],
+          "properties": {
+            "name": "Keyword",
+            "indexes": [
+              "embedding",
+              "canonical",
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=25, name='keyword_id', type='NODE PROPERTY UNIQUENESS', schema=(:Keyword {id}), ownedIndex=24 )"
+            ]
+          },
+          "elementId": "-101"
+        },
+        {
+          "identity": {
+            "low": -104,
+            "high": -1
+          },
+          "labels": [
+            "Dataset"
+          ],
+          "properties": {
+            "name": "Dataset",
+            "indexes": [
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=21, name='dataset_id', type='NODE PROPERTY UNIQUENESS', schema=(:Dataset {id}), ownedIndex=20 )"
+            ]
+          },
+          "elementId": "-104"
+        },
+        {
+          "identity": {
+            "low": -106,
+            "high": -1
+          },
+          "labels": [
+            "License"
+          ],
+          "properties": {
+            "name": "License",
+            "indexes": [
+              "embedding",
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=35, name='license_id_unique', type='NODE PROPERTY UNIQUENESS', schema=(:License {license_id}), ownedIndex=34 )"
+            ]
+          },
+          "elementId": "-106"
+        },
+        {
+          "identity": {
+            "low": -107,
+            "high": -1
+          },
+          "labels": [
+            "Resource"
+          ],
+          "properties": {
+            "name": "Resource",
+            "indexes": [],
+            "constraints": [
+              "Constraint( id=27, name='resource_id', type='NODE PROPERTY UNIQUENESS', schema=(:Resource {id}), ownedIndex=26 )"
+            ]
+          },
+          "elementId": "-107"
+        },
+        {
+          "identity": {
+            "low": -103,
+            "high": -1
+          },
+          "labels": [
+            "Time"
+          ],
+          "properties": {
+            "name": "Time",
+            "indexes": [
+              "begin,end",
+              "begin",
+              "end"
+            ],
+            "constraints": [
+              "Constraint( id=33, name='time_dataset', type='NODE PROPERTY UNIQUENESS', schema=(:Time {dataset_id}), ownedIndex=32 )"
+            ]
+          },
+          "elementId": "-103"
+        },
+        {
+          "identity": {
+            "low": -109,
+            "high": -1
+          },
+          "labels": [
+            "Topic"
+          ],
+          "properties": {
+            "name": "Topic",
+            "indexes": [
+              "embedding",
+              "name,canonical,aliases"
+            ],
+            "constraints": [
+              "Constraint( id=39, name='topic_id', type='NODE PROPERTY UNIQUENESS', schema=(:Topic {id}), ownedIndex=38 )",
+              "Constraint( id=37, name='topic_canon', type='NODE PROPERTY UNIQUENESS', schema=(:Topic {canonical}), ownedIndex=36 )"
+            ]
+          },
+          "elementId": "-109"
+        },
+        {
+          "identity": {
+            "low": -100,
+            "high": -1
+          },
+          "labels": [
+            "Source"
+          ],
+          "properties": {
+            "name": "Source",
+            "indexes": [
+              "embedding",
+              "embedding_status"
+            ],
+            "constraints": [
+              "Constraint( id=19, name='source_id', type='NODE PROPERTY UNIQUENESS', schema=(:Source {id}), ownedIndex=18 )"
+            ]
+          },
+          "elementId": "-100"
+        }
+      ],
+      [
+        {
+          "identity": {
+            "low": -108,
+            "high": -1
+          },
+          "start": {
+            "low": -107,
+            "high": -1
+          },
+          "end": {
+            "low": -108,
+            "high": -1
+          },
+          "type": "HAS_FORMAT",
+          "properties": {
+            "name": "HAS_FORMAT"
+          },
+          "elementId": "-108",
+          "startNodeElementId": "-107",
+          "endNodeElementId": "-108"
+        },
+        {
+          "identity": {
+            "low": -101,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -102,
+            "high": -1
+          },
+          "type": "HAS_SPACE",
+          "properties": {
+            "name": "HAS_SPACE"
+          },
+          "elementId": "-101",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-102"
+        },
+        {
+          "identity": {
+            "low": -106,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -109,
+            "high": -1
+          },
+          "type": "HAS_TOPIC",
+          "properties": {
+            "name": "HAS_TOPIC"
+          },
+          "elementId": "-106",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-109"
+        },
+        {
+          "identity": {
+            "low": -107,
+            "high": -1
+          },
+          "start": {
+            "low": -100,
+            "high": -1
+          },
+          "end": {
+            "low": -104,
+            "high": -1
+          },
+          "type": "PROVIDES",
+          "properties": {
+            "name": "PROVIDES"
+          },
+          "elementId": "-107",
+          "startNodeElementId": "-100",
+          "endNodeElementId": "-104"
+        },
+        {
+          "identity": {
+            "low": -104,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -101,
+            "high": -1
+          },
+          "type": "HAS_KEYWORD",
+          "properties": {
+            "name": "HAS_KEYWORD"
+          },
+          "elementId": "-104",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-101"
+        },
+        {
+          "identity": {
+            "low": -105,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -107,
+            "high": -1
+          },
+          "type": "HAS_RESOURCE",
+          "properties": {
+            "name": "HAS_RESOURCE"
+          },
+          "elementId": "-105",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-107"
+        },
+        {
+          "identity": {
+            "low": -100,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -105,
+            "high": -1
+          },
+          "type": "PUBLISHED_BY",
+          "properties": {
+            "name": "PUBLISHED_BY"
+          },
+          "elementId": "-100",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-105"
+        },
+        {
+          "identity": {
+            "low": -102,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -106,
+            "high": -1
+          },
+          "type": "HAS_LICENSE",
+          "properties": {
+            "name": "HAS_LICENSE"
+          },
+          "elementId": "-102",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-106"
+        },
+        {
+          "identity": {
+            "low": -103,
+            "high": -1
+          },
+          "start": {
+            "low": -104,
+            "high": -1
+          },
+          "end": {
+            "low": -103,
+            "high": -1
+          },
+          "type": "HAS_TIME",
+          "properties": {
+            "name": "HAS_TIME"
+          },
+          "elementId": "-103",
+          "startNodeElementId": "-104",
+          "endNodeElementId": "-103"
+        }
+      ]
+    ],
+    "_fieldLookup": {
+      "nodes": 0,
+      "relationships": 1
+    }
+  }
+]

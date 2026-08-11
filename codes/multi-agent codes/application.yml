@@ -1,0 +1,29 @@
+server:
+  port: 8089
+  connection-timeout: 300000
+  # Tomcat
+  tomcat:
+    connection-timeout: 300000 
+    keep-alive-timeout: 300000 
+
+spring:
+  application:
+    name: igdd-backend
+  main:
+    banner-mode: "off"
+
+openai:
+  apiKey: "sk-proj-xxxxxxx"
+  model: "gpt-5.2"
+  timeoutSeconds: 60
+
+neo4j:
+  uri: 
+  username: neo4j
+  password: 
+  database: neo4j
+
+postgres:
+  url: 
+  user: 
+  password: 

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IGDD Chat: An Intelligent Geospatial Data Discovery Assistant</title>
+  <link rel="icon" type="image/png" href="igdd_logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+  
+  <!-- Cytoscape CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.css">
+  
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+  
+  <!-- Cytoscape JS -->
+  <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+</head>
+
+<body>
+<div class="app-root">
+  <!-- Left sidebar -->
+  <aside class="sidebar-left" id="sidebar-left">
+    <div class="sidebar-left-header">
+      <div class="sidebar-header-content">
+        <div class="sidebar-header-text">
+          <div class="sidebar-left-section-title">Configuration & History</div>
+        </div>
+        <button class="sidebar-toggle-btn" id="toggle-left-sidebar" title="Toggle sidebar" aria-label="Toggle left sidebar">
+          <span class="toggle-icon">◀</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-left-content">
+      <!-- Configuration Module -->
+      <div class="left-sidebar-module">
+        <div class="left-sidebar-module-header">
+          <div class="left-sidebar-module-title">Configuration</div>
+        </div>
+        <div class="left-sidebar-module-content">
+          <!-- API Key Input -->
+          <div class="left-sidebar-control-group">
+            <label class="left-sidebar-control">
+              <span class="left-sidebar-control-label">
+                GIBD API Key
+                <span class="api-key-info-wrapper">
+                  <button type="button" id="api-key-info-btn" class="api-key-info-btn" title="About GIBD API Key">
+                    <span class="info-icon">!</span>
+                  </button>
+                  <div id="api-key-info-tooltip" class="api-key-info-tooltip" style="display: none;">
+                    Please use a GIBD API key provided by the <a href="https://giscience.psu.edu/" target="_blank" rel="noopener noreferrer">GIBD Lab</a>. You can register an account at <a href="https://www.gibd.online/" target="_blank" rel="noopener noreferrer">gibd.online</a> to obtain your API key.
+                  </div>
+                </span>
+              </span>
+              <div class="api-key-input-wrapper">
+                <input type="password" id="api-key-input" class="left-sidebar-control-input" placeholder="Enter API key" />
+                <button type="button" id="api-key-toggle" class="api-key-toggle-btn" title="Show/Hide API key">●</button>
+              </div>
+            </label>
+            <div id="api-key-hint" class="api-key-hint" style="display: none;">
+              <span>Don't have an API key? </span>
+              <a href="https://www.gibd.online/" target="_blank" rel="noopener noreferrer" class="api-key-link">Get one here</a>
+            </div>
+          </div>
+
+          <!-- Advanced Configuration (Collapsible) -->
+          <details class="configuration-details">
+            <summary class="configuration-summary">Advanced Settings</summary>
+            <div class="configuration-advanced-content">
+              <!-- Model Select -->
+              <div class="left-sidebar-control-group">
+                <label class="left-sidebar-control">
+                  <span class="left-sidebar-control-label">Model</span>
+                  <select id="model-select" class="left-sidebar-control-select">
+                    <option value="gpt-5.2" selected>GPT-5.2</option>
+                    <option value="gpt-5.1">GPT-5.1</option>
+                    <option value="gpt-5">GPT-5</option>
+                    <option value="gpt-5-mini">GPT-5-mini</option>
+                    <option value="gpt-5-nano">GPT-5-nano</option>
+                    <option value="gpt-4.1">GPT-4.1</option>
+                    <option value="gpt-4o">GPT-4o</option>
+                    <option value="gpt-4o-mini">GPT-4o-mini</option>
+                  </select>
+                </label>
+              </div>
+
+              <!-- Auto Execute Toggle -->
+              <div class="left-sidebar-control-group">
+                <label class="left-sidebar-control left-sidebar-control-toggle" title="Automatically select candidates above similarity threshold">
+                  <input type="checkbox" id="auto-execute-toggle" checked />
+                  <span class="left-sidebar-control-toggle-text">Auto execute</span>
+                </label>
+              </div>
+
+              <!-- Search Mode Select -->
+              <div class="left-sidebar-control-group">
+                <label class="left-sidebar-control">
+                  <span class="left-sidebar-control-label">Search Mode</span>
+                  <select id="search-mode-select" class="left-sidebar-control-select">
+                    <option value="embedding" selected>Embedding</option>
+                    <option value="text">Text Search</option>
+                  </select>
+                </label>
+              </div>
+
+              <!-- Data Catalog Selection -->
+              <div class="left-sidebar-control-group">
+                <details class="portal-selection-details">
+                  <summary class="portal-selection-summary">Data Catalog Selection</summary>
+                  <div class="portal-selection-content">
+                    <div class="portal-selection-section">
+                      <div class="portal-selection-section-title">
+                        <a href="https://ckan.org/" target="_blank" rel="noopener noreferrer" class="portal-section-title-link">CKAN</a>
+                      </div>
+                    <div class="portal-selection-item">
+                      <label class="left-sidebar-control left-sidebar-control-toggle">
+                        <input type="checkbox" id="portal-datagov" checked />
+                        <span class="left-sidebar-control-toggle-text">
+                          <div class="portal-name">
+                            <a href="https://data.gov/" target="_blank" rel="noopener noreferrer" class="portal-link">The Home of the U.S. Government's Open Data (DATA.GOV)</a>
+                          </div>
+                        </span>
+                      </label>
+                    </div>
+                    </div>
+                    <div class="portal-selection-section">
+                      <div class="portal-selection-section-title">
+                        <a href="https://www.fgdc.gov/metadata/csdgm-standard" target="_blank" rel="noopener noreferrer" class="portal-section-title-link">FGDC CSDGM</a>
+                    </div>
+                    <div class="portal-selection-item">
+                      <label class="left-sidebar-control left-sidebar-control-toggle">
+                        <input type="checkbox" id="portal-pasda" checked />
+                        <span class="left-sidebar-control-toggle-text">
+                          <div class="portal-name">
+                            <a href="https://www.pasda.psu.edu/" target="_blank" rel="noopener noreferrer" class="portal-link">Pennsylvania Spatial Data Access (PASDA)</a>
+                          </div>
+                        </span>
+                      </label>
+                      </div>
+                    </div>
+                    <div class="portal-selection-section">
+                      <div class="portal-selection-section-title">
+                        <a href="https://stacspec.org/" target="_blank" rel="noopener noreferrer" class="portal-section-title-link">STAC</a>
+                      </div>
+                      <div class="portal-selection-item">
+                        <label class="left-sidebar-control left-sidebar-control-toggle">
+                          <input type="checkbox" id="portal-stac-google" checked />
+                          <span class="left-sidebar-control-toggle-text">
+                            <div class="portal-name">
+                              <a href="https://stacindex.org/catalogs/google-earth-engine-openeo" target="_blank" rel="noopener noreferrer" class="portal-link">Google Earth Engine Proxy for openEO</a>
+                            </div>
+                            <div class="portal-endpoint">
+                              <a href="https://earthengine.openeo.org/v1.0/" target="_blank" rel="noopener noreferrer" class="portal-endpoint-link">https://earthengine.openeo.org/v1.0/</a>
+                            </div>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="portal-selection-item">
+                        <label class="left-sidebar-control left-sidebar-control-toggle">
+                          <input type="checkbox" id="portal-stac-microsoft" checked />
+                          <span class="left-sidebar-control-toggle-text">
+                            <div class="portal-name">
+                              <a href="https://stacindex.org/catalogs/microsoft-pc" target="_blank" rel="noopener noreferrer" class="portal-link">Microsoft Planetary Computer STAC API</a>
+                            </div>
+                            <div class="portal-endpoint">
+                              <a href="https://planetarycomputer.microsoft.com/api/stac/v1/" target="_blank" rel="noopener noreferrer" class="portal-endpoint-link">https://planetarycomputer.microsoft.com/api/stac/v1/</a>
+                            </div>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="portal-selection-item">
+                        <label class="left-sidebar-control left-sidebar-control-toggle">
+                          <input type="checkbox" id="portal-stac-dedl" checked />
+                          <span class="left-sidebar-control-toggle-text">
+                            <div class="portal-name">
+                              <a href="https://stacindex.org/catalogs/dedl-api" target="_blank" rel="noopener noreferrer" class="portal-link">Destination Earth Data Lake Harmonized Data Access (DEDL HDA) STAC API</a>
+                            </div>
+                            <div class="portal-endpoint">
+                              <a href="https://hda.data.destination-earth.eu/stac/v2" target="_blank" rel="noopener noreferrer" class="portal-endpoint-link">https://hda.data.destination-earth.eu/stac/v2</a>
+                            </div>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="portal-selection-item">
+                        <label class="left-sidebar-control left-sidebar-control-toggle">
+                          <input type="checkbox" id="portal-stac-paituli" checked />
+                          <span class="left-sidebar-control-toggle-text">
+                            <div class="portal-name">
+                              <a href="https://stacindex.org/catalogs/paituli-stac-finland" target="_blank" rel="noopener noreferrer" class="portal-link">Paituli STAC with Finnish data</a>
+                            </div>
+                            <div class="portal-endpoint">
+                              <a href="https://paituli.csc.fi/geoserver/ogc/stac/v1" target="_blank" rel="noopener noreferrer" class="portal-endpoint-link">https://paituli.csc.fi/geoserver/ogc/stac/v1</a>
+                            </div>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </details>
+              </div>
+
+              <!-- Hyperparameters -->
+              <div class="left-sidebar-control-group">
+                <details class="hyperparameters-details">
+                  <summary class="hyperparameters-summary">Hyperparameters</summary>
+                  <div class="hyperparameters-content">
+                    <div class="hyperparameters-section">
+                      <div class="hyperparameters-section-title">Graph Retrieval Weights</div>
+                      <label class="control">
+                        <span class="control-label">wTopic</span>
+                        <input type="number" id="weight-topic" class="control-input" step="0.01" min="0.01" value="0.3" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">wFormat</span>
+                        <input type="number" id="weight-format" class="control-input" step="0.01" min="0.01" value="0.1" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">wLicense</span>
+                        <input type="number" id="weight-license" class="control-input" step="0.01" min="0.01" value="0.1" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">wOrganization</span>
+                        <input type="number" id="weight-organization" class="control-input" step="0.01" min="0.01" value="0.1" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">wSpace</span>
+                        <input type="number" id="weight-space" class="control-input" step="0.01" min="0.01" value="0.2" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">wTime</span>
+                        <input type="number" id="weight-time" class="control-input" step="0.01" min="0.01" value="0.2" />
+                      </label>
+                    </div>
+                    <div class="hyperparameters-section">
+                      <div class="hyperparameters-section-title">Thresholds</div>
+                      <label class="control">
+                        <span class="control-label" id="similarity-threshold-label">Similarity Score Threshold</span>
+                        <input type="number" id="similarity-score-threshold" class="control-input" step="0.01" min="0.4" max="1" value="0.7" />
+                      </label>
+                      <label class="control">
+                        <span class="control-label">Confidence Threshold</span>
+                        <input type="number" id="confidence-threshold" class="control-input" step="0.01" min="0.3" max="0.9" value="0.5" />
+                      </label>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Quick Examples Module (Separate) -->
+      <div class="left-sidebar-module">
+        <div class="left-sidebar-module-header">
+          <div class="left-sidebar-module-title">Quick Examples</div>
+        </div>
+        <div class="left-sidebar-module-content">
+          <details class="quick-examples-details">
+            <summary class="quick-examples-summary">Show Examples</summary>
+            <div class="quick-examples" id="quick-examples">
+              <!-- rendered by app.js -->
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- History Module -->
+      <div class="left-sidebar-module">
+        <div class="left-sidebar-module-header">
+          <div class="left-sidebar-module-title">Conversation History</div>
+          <button class="new-conversation-btn" id="new-conversation-btn" title="New conversation" onclick="createNewConversation()">+</button>
+        </div>
+        <div class="left-sidebar-module-content">
+          <div class="conversation-history-list" id="conversation-history-list">
+            <div class="conversation-history-empty">No conversations yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-left-footer">
+      <div class="sidebar-left-footer-copyright">
+        <div class="copyright-text">Copyright 2026 © <a href="https://giscience.psu.edu/" target="_blank" rel="noopener noreferrer" class="footer-link">Geoinformation and Big Data Research Laboratory (GIBD)</a> at The Pennsylvania State University.</div>
+        <div class="copyright-address">
+          225 Walker Building, University Park, PA 16802 USA
+          <a href="https://www.google.com/maps/search/Geoinformation+and+Big+Data+Research+Lab+GIBD+225+Walker+Building+University+Park+PA" target="_blank" rel="noopener noreferrer" class="copyright-map-link" title="查看地图 - View Geoinformation and Big Data Research Lab (GIBD) on Google Maps">📍</a>
+        </div>
+      </div>
+    </div>
+    <!-- Left sidebar resizer -->
+    <div class="sidebar-resizer sidebar-resizer-left" id="sidebar-resizer-left"></div>
+  </aside>
+
+  <!-- Middle column -->
+  <main class="main-column">
+    <header class="top-header">
+      <div class="top-header-left">
+        <div class="top-header-logo-title">
+          <img src="igdd_logo.png" alt="IGDD Logo" class="igdd-logo" />
+          <div class="top-header-title-group">
+            <div class="top-header-title">
+              <span class="igdd-main">I</span><span class="igdd-main">G</span><span class="igdd-main">D</span><span class="igdd-main">D</span> Chat: An <span class="igdd-first-letter">I</span>ntelligent <span class="igdd-first-letter">G</span>eospatial <span class="igdd-first-letter">D</span>ata <span class="igdd-first-letter">D</span>iscovery Assistant
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-header-right">
+        <!-- Controls moved to left sidebar -->
+      </div>
+    </header>
+
+    <section class="chat-scroll">
+      <div class="chat-inner" id="chat-messages"></div>
+    </section>
+
+    <footer class="input-footer">
+      <div class="input-inner">
+        <div class="input-box">
+          <textarea
+            id="message"
+            rows="1"
+            placeholder="Message IGDD (describe any dataset constraints)."
+          ></textarea>
+          <button class="send-button" id="send-btn" title="Send">
+            <span class="send-icon">➤</span>
+          </button>
+        </div>
+
+        <div class="input-hint">
+          Press <span class="kbd">Enter</span> to send ·
+          <span class="kbd">Shift + Enter</span> for newline
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Right sidebar -->
+  <aside class="sidebar-right" id="sidebar-right">
+    <!-- Right sidebar resizer -->
+    <div class="sidebar-resizer sidebar-resizer-right" id="sidebar-resizer-right"></div>
+    <div class="sidebar-right-header">
+      <div class="sidebar-header-content">
+        <div class="sidebar-header-text">
+          <div class="sidebar-right-title">IGDD Console</div>
+          <div class="sidebar-right-subtitle">Pipeline · Parsed intent · Logs</div>
+        </div>
+        <button class="sidebar-toggle-btn" id="toggle-right-sidebar" title="Toggle sidebar" aria-label="Toggle right sidebar">
+          <span class="toggle-icon">▶</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-right-status">
+      <div>Stage: <span id="stage-text">idle</span></div>
+      <div>Datasets: <span id="datasets-count">0</span></div>
+    </div>
+
+    <div class="sidebar-right-scroll">
+      <section class="sidebar-section pipeline-section">
+        <div class="section-title">Pipeline</div>
+        <div class="pipeline-total-time" id="pipeline-total-time"></div>
+        <div class="pipeline-graph" id="pipeline-graph"></div>
+      </section>
+
+      <section class="sidebar-section">
+        <div class="section-title">Parsed intent</div>
+        <div class="intent-panel" id="intent-panel">
+          <div class="intent-empty">No intent yet. Send a message to see parsed intent here.</div>
+        </div>
+
+        <details class="raw-json">
+          <summary>Raw intent JSON</summary>
+          <pre id="intent-raw">{}</pre>
+        </details>
+      </section>
+
+      <section class="sidebar-section">
+        <div class="section-title">Logs</div>
+        <div class="logs-panel" id="logs-panel">
+          <div class="logs-empty">No logs yet.</div>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Feedback Button (Fixed bottom-right, can hide to the right, default hidden) -->
+<button id="feedback-btn" class="feedback-btn hidden" title="Send Feedback">
+  💬
+</button>
+<!-- Feedback Toggle Button (shown when feedback button is hidden) -->
+<button id="feedback-toggle-btn" class="feedback-toggle-btn show" title="Show Feedback Button">
+  💬
+</button>
+
+<!-- Feedback Modal -->
+<div id="feedback-modal" class="feedback-modal" style="display: none;">
+  <div class="feedback-modal-content">
+    <div class="feedback-modal-header">
+      <h2>Send Feedback</h2>
+      <button class="feedback-modal-close" id="feedback-modal-close">&times;</button>
+    </div>
+    <div class="feedback-modal-body">
+      <div class="feedback-form-group">
+        <label for="feedback-rating">Rating (1-5):</label>
+        <select id="feedback-rating" class="feedback-input">
+          <option value="">Select rating...</option>
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Good</option>
+          <option value="3">3 - Average</option>
+          <option value="2">2 - Poor</option>
+          <option value="1">1 - Very Poor</option>
+        </select>
+      </div>
+      <div class="feedback-form-group">
+        <label for="feedback-content">Feedback:</label>
+        <textarea id="feedback-content" class="feedback-input feedback-textarea" rows="5" placeholder="Please share your thoughts, suggestions, or report any issues..."></textarea>
+      </div>
+      <div class="feedback-contact-info">
+        <p>You can also contact the authors:</p>
+        <ul>
+          <li>Ruixiang Liu, Ph.D. Student at Penn State University (<a href="mailto:ruixiangliu@psu.edu">ruixiangliu@psu.edu</a>)</li>
+          <li>Zhenlong Li, Associate Professor at Penn State University (<a href="mailto:zhenlong@psu.edu">zhenlong@psu.edu</a>)</li>
+          <li>Ali Khosravi Kazazi, Ph.D. Student at Penn State University (<a href="mailto:abk6234@psu.edu">abk6234@psu.edu</a>)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="feedback-modal-footer">
+      <button id="feedback-submit" class="feedback-submit-btn">Submit</button>
+      <button id="feedback-cancel" class="feedback-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
