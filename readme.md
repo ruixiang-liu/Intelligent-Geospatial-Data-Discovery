@@ -75,7 +75,12 @@ There are two ways for the knowledge graph building: build with neo4j.dump or wi
    bin/neo4j-admin database load neo4j --from-path=/your path/ --overwrite-destination=true --verbose
    ```
 
-​	Here we provide a version of neo4j.dump without embedding since the embedding version exceeds 18GB, which can not be uploaded to Figshare.
+​Here we provide a version of neo4j.dump without embedding since the embedding version exceeds 18GB. If you want to use this dump file directly, please use text-embedding-3-large model to embed the entities:
+- Topic: name
+- Organization: title and description
+- License: title
+- Keyword: name
+- Format: name
 
 ## 3.2 Build with knowledge graph building codes
 
