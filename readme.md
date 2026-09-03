@@ -244,3 +244,22 @@ Important notes:
 
 7. igdd_plot_figure14a.m and igdd_plot_figure14b.m further shows how we plotted Figure 14 using the results from igdd_evaluation_summary.csv.
 
+# 7. How to Cite
+
+If you use IGDD, its source code, knowledge graph, or evaluation data in your research, please cite our paper:
+
+> Liu, R., Li, Z., & Khosravi Kazazi, A. (2026). Towards intelligent geospatial data discovery: a knowledge graph-driven multi-agent framework powered by large language models. *International Journal of Geographical Information Science*. Advance online publication. https://doi.org/10.1080/13658816.2026.2724505
+
+**BibTeX:**
+
+```bibtex
+@article{liu2026intelligentgeospatial,
+  author  = {Liu, Ruixiang and Li, Zhenlong and Khosravi Kazazi, Ali},
+  title   = {Towards intelligent geospatial data discovery: a knowledge graph-driven multi-agent framework powered by large language models},
+  journal = {International Journal of Geographical Information Science},
+  year    = {2026},
+  doi     = {10.1080/13658816.2026.2724505},
+  url     = {https://doi.org/10.1080/13658816.2026.2724505}
+}
+```
+
