@@ -3,6 +3,11 @@
 
 This project proposes a knowledge graph-driven multi-agent framework for intelligent geospatial data discovery powered by large language models (LLMs). It aims to advance geospatial data discovery toward a more semantic, intent-aware, and intelligent paradigm, and provide methodological foundations for the next generation of intelligent and autonomous spatial data infrastructures.
 
+Video demos:
+- [DEM Data Discovery Demo](https://www.youtube.com/watch?v=2mOmZJn4rIs&list=PL6ON3gdLloDGB1dhSkw27VY1oWJv2WLRJ)
+- [U.S. Census Data Discovery Demo](https://www.youtube.com/watch?v=JTrP1WX-dPE&list=PL6ON3gdLloDGB1dhSkw27VY1oWJv2WLRJ&index=2)
+- [Climate Data Discovery Demo](https://www.youtube.com/watch?v=IxeKS-924zw&list=PL6ON3gdLloDGB1dhSkw27VY1oWJv2WLRJ&index=3)
+
 The project directory is structured as follows:
 
 ```text
@@ -248,7 +253,7 @@ Important notes:
 
 If you use IGDD, its source code, knowledge graph, or evaluation data in your research, please cite our paper:
 
-> Liu, R., Li, Z., & Khosravi Kazazi, A. (2026). Towards intelligent geospatial data discovery: a knowledge graph-driven multi-agent framework powered by large language models. *International Journal of Geographical Information Science*. Advance online publication. https://doi.org/10.1080/13658816.2026.2724505
+> Liu, R., Li, Z., & Khosravi Kazazi, A. (2026). Towards intelligent geospatial data discovery: a knowledge graph-driven multi-agent framework powered by large language models. *International Journal of Geographical Information Science*, 1–29. https://doi.org/10.1080/13658816.2026.2724505
 
 **BibTeX:**
 
